@@ -38,10 +38,8 @@ void FPSCamera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 		this->Position -= this->Front * velocity;
 	if (direction == LEFT)
 		this->Position -= this->Right * velocity;
-	//Right = Right * velocity;
-	Right = Vector3(0, 1, 0);
 	if (direction == RIGHT)
-		this->Position += this->Right;
+		this->Position += this->Right * velocity;
 	
 }
 
