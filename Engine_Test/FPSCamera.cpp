@@ -74,9 +74,9 @@ void FPSCamera::ProcessMouseScroll(float yoffset)
 
 void FPSCamera::UpdateCameraVectors()
 {
-	Front.mX = cos(ToRadians(this->Yaw)) * cos(ToRadians(this->Pitch));
-	Front.mY = sin(ToRadians(this->Pitch));
-	Front.mZ = sin(ToRadians(this->Yaw)) * cos(ToRadians(this->Pitch));
+	Front.X = cos(ToRadians(this->Yaw)) * cos(ToRadians(this->Pitch));
+	Front.Y = sin(ToRadians(this->Pitch));
+	Front.Z = sin(ToRadians(this->Yaw)) * cos(ToRadians(this->Pitch));
 	Front.Normalize();
 	
 	Right = WorldUp.Cross(Front).Normalize();
@@ -94,18 +94,18 @@ void FPSCamera::UpdateMatrix()
 	dir += Front;
 	dir.Normalize();
 
-	ViewMatrix.GetMatrixData()[0] = Right.mX;
-	ViewMatrix.GetMatrixData()[1] = Right.mY;
-	ViewMatrix.GetMatrixData()[2] = Right.mZ;
-	ViewMatrix.GetMatrixData()[3] = -Position.mX;
+	ViewMatrix.GetMatrixData()[0] = Right.X;
+	ViewMatrix.GetMatrixData()[1] = Right.Y;
+	ViewMatrix.GetMatrixData()[2] = Right.Z;
+	ViewMatrix.GetMatrixData()[3] = -Position.X;
 
-	ViewMatrix.GetMatrixData()[4] = Up.mX;
-	ViewMatrix.GetMatrixData()[5] = Up.mY;
-	ViewMatrix.GetMatrixData()[6] = Up.mZ;
-	ViewMatrix.GetMatrixData()[7] = -Position.mY;
+	ViewMatrix.GetMatrixData()[4] = Up.X;
+	ViewMatrix.GetMatrixData()[5] = Up.Y;
+	ViewMatrix.GetMatrixData()[6] = Up.Z;
+	ViewMatrix.GetMatrixData()[7] = -Position.Y;
 
-	ViewMatrix.GetMatrixData()[8]  = dir.mX;
-	ViewMatrix.GetMatrixData()[9]  = dir.mY;
-	ViewMatrix.GetMatrixData()[10] = dir.mZ;
-	ViewMatrix.GetMatrixData()[11] = -Position.mZ;
+	ViewMatrix.GetMatrixData()[8]  = dir.X;
+	ViewMatrix.GetMatrixData()[9]  = dir.Y;
+	ViewMatrix.GetMatrixData()[10] = dir.Z;
+	ViewMatrix.GetMatrixData()[11] = -Position.Z;
 }
