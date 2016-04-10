@@ -266,10 +266,15 @@ int main(int args, char **argv)
 		//mat.Scale(time);
 		//mat.Translate(0, 0, sin(time));
 		//cam.SetPos(Vector3(0, 0, time * 0.1f));
-		temp.SetToIdentity();
-		mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime, ROT_AXIS::X_AXIS);
-		temp.SetToIdentity();
-		mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime);
+		
+		//temp.SetToIdentity();
+		//mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime, ROT_AXIS::X_AXIS);
+		//temp.SetToIdentity();
+		//mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime);
+		
+		mat.RotateDeg(sin(time) * 30 * deltaTime, ROT_AXIS::X_AXIS);
+		mat.RotateDeg(sin(time) * 30 * deltaTime);
+		
 		//glUseProgram(shader.Program);
 		glUniform1f(xOffset, offset);
 		glUniform1f(glGetUniformLocation(shader.Program, "blendFactor"), offset);

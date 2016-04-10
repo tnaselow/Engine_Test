@@ -31,11 +31,14 @@ class Matrix4
 		Matrix4 GetInverse();
 
 		
-		Matrix4 &Scale(float scalar);
-		Matrix4 &Translate(float x, float y, float z);
+		Matrix4 &Scale(float scalar); //
+		Matrix4 &Translate(float x, float y, float z); 
 		Matrix4 &Translate(const Vector3 &vec);
+		Matrix4 &SetRotationDeg(float deg, ROT_AXIS axis = ROT_AXIS::Z_AXIS); 
+		Matrix4 &SetRotationRad(float rad, ROT_AXIS axis = ROT_AXIS::Z_AXIS);
+
 		Matrix4 &RotateDeg(float deg, ROT_AXIS axis = ROT_AXIS::Z_AXIS);
-		Matrix4 &RotateRad(float rad, ROT_AXIS axis = ROT_AXIS::Z_AXIS);
+		Matrix4 &RotateRad(float deg, ROT_AXIS axis = ROT_AXIS::Z_AXIS);
 
 		Matrix4 &SetToTranspose();
 		bool SetToInverse();

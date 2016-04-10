@@ -31,5 +31,5 @@ class Vector3
 
 		friend std::ostream &operator<<(std::ostream &os, const Vector3 &vec);
 
-		float mX, mY, mZ;
+		float X, Y, Z;
 };
