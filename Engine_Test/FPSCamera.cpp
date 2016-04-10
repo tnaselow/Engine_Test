@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FPSCamera.h"
+#include <iostream>
 
 #define PI 3.14159265359f
 
@@ -40,7 +41,8 @@ void FPSCamera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 		this->Position -= this->Right * velocity;
 	if (direction == RIGHT)
 		this->Position += this->Right * velocity;
-	
+
+	std::cout << ViewMatrix << std::endl;
 }
 
 void FPSCamera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)
@@ -78,9 +80,9 @@ void FPSCamera::UpdateCameraVectors()
 	Front.mY = sin(ToRadians(this->Pitch));
 	Front.mZ = sin(ToRadians(this->Yaw)) * cos(ToRadians(this->Pitch));
 	Front.Normalize();
-	
-	Right = WorldUp.Cross(Front).Normalize();
-	Up = Front.Cross(Right).Normalize();	
+
+	Right = Front.Cross(WorldUp).Normalize();
+	Up = Right.Cross(Front).Normalize();
 }
 
 float FPSCamera::ToRadians(float deg)
@@ -90,8 +92,8 @@ float FPSCamera::ToRadians(float deg)
 
 void FPSCamera::UpdateMatrix()
 {
-	Vector3 dir(Position);
-	dir += Front;
+	Vector3 dir;
+	dir = (Position + Front) - Position;
 	dir.Normalize();
 
 	ViewMatrix.GetMatrixData()[0] = Right.mX;

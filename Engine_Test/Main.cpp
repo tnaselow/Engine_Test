@@ -304,6 +304,11 @@ int main(int args, char **argv)
 			cam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
 		if (keys[GLFW_KEY_D])
 			cam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+
+		cam.Yaw += deltaTime * 10;
+		cam.UpdateCameraVectors();
+		cam.UpdateMatrix();
+		std::cout << cam.GetViewMatrix() << std::endl;
 	}
 
 
@@ -335,10 +340,6 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	GLfloat yoffset = lastY - static_cast<float>(ypos);
 	lastX = static_cast<float>(xpos);
 	lastY = static_cast<float>(ypos);
-
-	GLfloat sensitivity = 0.05f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
 
 	//cam.ProcessMouseMovement(xoffset, yoffset);
 }
