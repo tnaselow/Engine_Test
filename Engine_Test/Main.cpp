@@ -281,6 +281,6 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	float fov = camera.ProcessMouseScroll(yoffset);
+	float fov = camera.ProcessMouseScroll(static_cast<float>(yoffset));
 	persp.SetPerspective(fov, static_cast<float>(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100);
 }
