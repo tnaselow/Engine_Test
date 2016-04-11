@@ -7,7 +7,7 @@
 #include "Shader.h"
 #include "Sapph\Matrix4.h"
 #include "Sapph\Vector3.h"
-#include "FPSCamera.h"
+#include "Camera.h"
 
 // added comment 
 // HELOOO FROM THE OUTTTSIDDDE
@@ -19,6 +19,7 @@
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouseCallback(GLFWwindow* window, double xpos, double ypos);
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
 GLuint vertShader;
 GLuint fragShader;
@@ -26,7 +27,8 @@ GLuint fragShader;
 GLuint VAO1;
 GLuint VAO2;
 
-FPSCamera cam(0, 0, 3);
+Camera camera(0, 0, 3);
+Matrix4 persp;
 
 float deltaTime;
 float lastFrame;
@@ -157,7 +159,7 @@ int main(int args, char **argv)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	GLFWwindow *window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OpenGL Practice", nullptr, nullptr);
 	if (window == nullptr)
@@ -169,6 +171,7 @@ int main(int args, char **argv)
 
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetCursorPosCallback(window, mouseCallback);
+	glfwSetScrollCallback(window, scrollCallback);
 	glfwMakeContextCurrent(window);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -186,13 +189,10 @@ int main(int args, char **argv)
 
 
 
-	//GLuint shader = shadersInit();
 	Shader shader("../shaders/vert.shader", "../shaders/frag.shader");
 	triangleInit();
 
 	Matrix4 mat;
-	//Matrix4 view;
-	Matrix4 persp;
 	Matrix4 temp;
 	
 	persp.SetPerspective(45.0f, static_cast<float>(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100);
@@ -261,11 +261,8 @@ int main(int args, char **argv)
 		shader.Use();
 		//cam.SetDir(Vector3(cos(time) * cos(time), 0, sin(time) * sin(time)));
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, true, persp.GetMatrixData());
-		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, true, cam.GetViewMatrix().GetMatrixData());
-		//mat.Translate(0, 0, sin(time));
-		//mat.Scale(time);
-		//mat.Translate(0, 0, sin(time));
-		//cam.SetPos(Vector3(0, 0, time * 0.1f));
+		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, true, camera.GetViewMatrix().GetMatrixData());
+
 		
 		//temp.SetToIdentity();
 		//mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime, ROT_AXIS::X_AXIS);
@@ -294,26 +291,17 @@ int main(int args, char **argv)
 			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		//glBindVertexArray(VAO2);
-		//glUniformMatrix4fv(transform, 1, true, mat2.GetMatrixData());
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
 
 		if (keys[GLFW_KEY_W])
-			cam.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
+			camera.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
 		if (keys[GLFW_KEY_S])
-			cam.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
+			camera.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
 		if (keys[GLFW_KEY_A])
-			cam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
+			camera.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
 		if (keys[GLFW_KEY_D])
-			cam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
-
-		cam.Yaw += deltaTime * 10;
-		cam.UpdateCameraVectors();
-		cam.UpdateMatrix();
-		std::cout << cam.GetViewMatrix() << std::endl;
+			camera.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
 	}
 
 
@@ -346,5 +334,11 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 	lastX = static_cast<float>(xpos);
 	lastY = static_cast<float>(ypos);
 
-	//cam.ProcessMouseMovement(xoffset, yoffset);
+	camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	float fov = camera.ProcessMouseScroll(yoffset);
+	persp.SetPerspective(fov, static_cast<float>(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100);
 }
