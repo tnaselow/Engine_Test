@@ -8,7 +8,10 @@ uniform sampler2D ourTexture;
 uniform sampler2D ourTexture2;
 uniform float blendFactor;
 
+uniform vec3 objColor;
+
 void main()
 {
-  color = mix(texture(ourTexture, uv), texture(ourTexture2, uv), blendFactor);
+	vec4 lightColor = vec4(1.0, 1.0, 1.0, 1.0);
+	color = lightColor * vec4(objColor, 1.0);
 }

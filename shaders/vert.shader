@@ -5,8 +5,6 @@ layout (location = 1) in vec2 texCoords;
 
 out vec2 uv;
 
-uniform float xOffset;
-
 uniform mat4 transform;
 uniform mat4 projection;
 uniform mat4 view;

@@ -24,11 +24,13 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 GLuint vertShader;
 GLuint fragShader;
 
-GLuint VAO1;
-GLuint VAO2;
+GLuint VAO1, LightVAO;
 
 Camera camera(0, 0, 3);
 Matrix4 persp;
+
+Vector3 lightPos(2, 3, -3);
+Matrix4 lightMat;
 
 float deltaTime;
 float lastFrame;
@@ -38,115 +40,79 @@ bool keys[1024];
 void triangleInit()
 {
 	GLfloat vertices1[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f, 
+		0.5f,  0.5f, -0.5f, 
+		0.5f,  0.5f, -0.5f, 
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
 
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f, 
+		0.5f,  0.5f,  0.5f, 
+		0.5f,  0.5f,  0.5f, 
+		-0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
 
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f,  0.5f,  0.5f, 
+		0.5f,  0.5f, -0.5f, 
+		0.5f, -0.5f, -0.5f, 
+		0.5f, -0.5f, -0.5f, 
+		0.5f, -0.5f,  0.5f, 
+		0.5f,  0.5f,  0.5f, 
 
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		-0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f, 
+		0.5f, -0.5f,  0.5f, 
+		0.5f, -0.5f,  0.5f, 
+		-0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f, -0.5f,
+
+		-0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f, 
+		0.5f,  0.5f,  0.5f, 
+		0.5f,  0.5f,  0.5f, 
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f
 	};
 
-	GLfloat vertices2[] =
-	{
-		0.9f,  0.9f, 0.0f,  1.0f, 1.0f,// Top Right
-		0.9f, 0.5f, 0.0f,   1.0f, 0.0f,// Bottom Right
-		0.0f, 0.5f, 0.0f,   0.0f, 0.0f,// Bottom Left
-		0.0f,  0.9f, 0.0f,  0.0f, 1.0f// Top Left 
-	};
-
-	GLuint indices1[] = {  // Note that we start from 0!
-		0, 1, 3,   // First Triangle
-		1, 2, 3    // Second Triangle
-	};
-
-	GLuint indicies2[] =
-	{
-		0, 1, 3,   // First Triangle
-		1, 2, 3
-	};
-
-	GLuint VBO1, EBO1;
-	GLuint VBO2, EBO2;
+	GLuint VBO1, LightVBO;
 
 	glGenVertexArrays(1, &VAO1);
-	glGenVertexArrays(1, &VAO2);
+	glGenVertexArrays(1, &LightVAO);
 
 	glGenBuffers(1, &VBO1);
-	glGenBuffers(1, &EBO1);
-
-	glGenBuffers(1, &VBO2);
-	glGenBuffers(1, &EBO2);
-
-	glBindVertexArray(VAO2);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO2);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies2), indicies2, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)0);
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
-		glEnableVertexAttribArray(1);
-
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
-
+	glGenBuffers(1, &LightVBO);
+	
 	glBindVertexArray(VAO1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO1);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices1), indices1, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
 		glEnableVertexAttribArray(0);
 
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
-		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+
+	glBindVertexArray(LightVAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, LightVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (GLvoid *)0);
+		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(0);
 }
@@ -190,26 +156,16 @@ int main(int args, char **argv)
 
 
 	Shader shader("../shaders/vert.shader", "../shaders/frag.shader");
+	
 	triangleInit();
 
 	Matrix4 mat;
-	Matrix4 temp;
 	
 	persp.SetPerspective(45.0f, static_cast<float>(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100);
-	//persp.SetOrtho(-400 , 400, -300, 300, -1.0f, 1.0f);
-	
-	//mat.Translate(400, 0, 0);
-	//mat.RotateDeg(45.0f);
-	//mat.Translate(-400.0f, 300.0f, 0);
-	//mat.Scale(100);
-	//mat = temp.RotateDeg(45.0f) * mat;
 
-	//view.Translate(0, 0, 3.0f);
-	//mat = mat * mat2.Scale(2.0f);
-	//mat2.Translate(.5, .5, 1);
 
 	GLuint transform = glGetUniformLocation(shader.Program, "transform");
-	GLint xOffset = glGetUniformLocation(shader.Program, "xOffset");
+	
 	int width, height;
 	unsigned char *image = SOIL_load_image("../res/container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 	//unsigned char *image = SOIL_load_image("../res/basic_tiles.png", &width, &height, 0, SOIL_LOAD_RGB);
@@ -231,19 +187,9 @@ int main(int args, char **argv)
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
-	Vector3 cubePositions[] = {
-		Vector3(0.0f,  0.0f,  0.0f),
-		Vector3(2.0f,  5.0f, -15.0f),
-		Vector3(-1.5f, -2.2f, -2.5f),
-		Vector3(-3.8f, -2.0f, -12.3f),
-		Vector3(2.4f, -0.4f, -3.5f),
-		Vector3(-1.7f,  3.0f, -7.5f),
-		Vector3(1.3f, -2.0f, -2.5f),
-		Vector3(1.5f,  2.0f, -2.5f),
-		Vector3(1.5f,  0.2f, -1.5f),
-		Vector3(-1.3f,  1.0f, -1.5f)
-	};
+	Vector3 cubePos(0, 0, 0);
 
+	Vector3 objColor;
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -257,24 +203,14 @@ int main(int args, char **argv)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 		GLfloat time = (float)glfwGetTime();
-		GLfloat offset = ((float)sin(time) / 2) + 0.5f;
 		shader.Use();
 		//cam.SetDir(Vector3(cos(time) * cos(time), 0, sin(time) * sin(time)));
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, true, persp.GetMatrixData());
 		glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, true, camera.GetViewMatrix().GetMatrixData());
-
-		
-		//temp.SetToIdentity();
-		//mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime, ROT_AXIS::X_AXIS);
-		//temp.SetToIdentity();
-		//mat = mat * temp.RotateDeg(sin(time) * 30 * deltaTime);
 		
 		mat.RotateDeg(sin(time) * 30 * deltaTime, ROT_AXIS::X_AXIS);
 		mat.RotateDeg(sin(time) * 30 * deltaTime);
 		
-		//glUseProgram(shader.Program);
-		glUniform1f(xOffset, offset);
-		glUniform1f(glGetUniformLocation(shader.Program, "blendFactor"), offset);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
@@ -283,14 +219,20 @@ int main(int args, char **argv)
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glUniform1i(glGetUniformLocation(shader.Program, "ourTexture2"), 1);
 
-		for (int i = 0; i < 10; i++)
-		{
-			mat.Translate(cubePositions[i]);
-			glUniformMatrix4fv(transform, 1, true, mat.GetMatrixData());
-			glBindVertexArray(VAO1);
-			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
+		objColor = Vector3(1, 0, 0);
+		glUniform3f(glGetUniformLocation(shader.Program, "objColor"), objColor.X, objColor.Y, objColor.Z);
+		glBindVertexArray(VAO1);
+		mat.Translate(cubePos);
+		glUniformMatrix4fv(transform, 1, true, mat.GetMatrixData());
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		objColor = Vector3(1, 1, 1);
+		glUniform3f(glGetUniformLocation(shader.Program, "objColor"), objColor.X, objColor.Y, objColor.Z);
+		glBindVertexArray(LightVAO);
+		lightMat.Translate(lightPos);
+		glUniformMatrix4fv(transform, 1, true, lightMat.GetMatrixData());
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
 		glfwSwapBuffers(window);
 

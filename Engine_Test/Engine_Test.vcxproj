@@ -160,6 +160,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\frag.shader" />
+    <None Include="..\shaders\vert.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
