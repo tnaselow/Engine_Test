@@ -29,8 +29,6 @@ GLuint VAO1, LightVAO;
 Camera camera(0, 0, 3);
 Matrix4 persp;
 
-Vector3 lightPos(2, 3, -3);
-Matrix4 lightMat;
 
 float deltaTime;
 float lastFrame;
@@ -187,6 +185,11 @@ int main(int args, char **argv)
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
+
+
+	Matrix4 lightMat;
+	Vector3 lightPos(2, 3, -3);
+
 	Vector3 cubePos(0, 0, 0);
 
 	Vector3 objColor;
