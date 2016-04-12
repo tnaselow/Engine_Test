@@ -14,6 +14,6 @@ uniform mat4 view;
 void main()
 {
   gl_Position = projection * view * transform * vec4(position.xyz, 1.0);
-  norms = normals;
+  norms = mat3(transform) * normals;
   fragPos = vec3(transform * vec4(position, 1.0f));
 }
