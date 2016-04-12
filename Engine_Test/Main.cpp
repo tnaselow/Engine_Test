@@ -30,6 +30,7 @@ Camera camera(0, 0, 3);
 Matrix4 persp;
 
 
+
 float deltaTime;
 float lastFrame;
 bool keys[1024];
@@ -38,65 +39,66 @@ bool keys[1024];
 void triangleInit()
 {
 	GLfloat vertices1[] = {
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-		-0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f, 
-		0.5f,  0.5f, -0.5f, 
-		0.5f,  0.5f, -0.5f, 
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-		-0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f, 
-		0.5f,  0.5f,  0.5f, 
-		0.5f,  0.5f,  0.5f, 
-		-0.5f,  0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-		0.5f,  0.5f,  0.5f, 
-		0.5f,  0.5f, -0.5f, 
-		0.5f, -0.5f, -0.5f, 
-		0.5f, -0.5f, -0.5f, 
-		0.5f, -0.5f,  0.5f, 
-		0.5f,  0.5f,  0.5f, 
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-		-0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f, 
-		0.5f, -0.5f,  0.5f, 
-		0.5f, -0.5f,  0.5f, 
-		-0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f, -0.5f,
-
-		-0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f, 
-		0.5f,  0.5f,  0.5f, 
-		0.5f,  0.5f,  0.5f, 
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 	};
 
-	GLuint VBO1, LightVBO;
+	GLuint VBO1;
 
 	glGenVertexArrays(1, &VAO1);
 	glGenVertexArrays(1, &LightVAO);
 
 	glGenBuffers(1, &VBO1);
-	glGenBuffers(1, &LightVBO);
 	
 	glBindVertexArray(VAO1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)0);
 		glEnableVertexAttribArray(0);
+
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)(3 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -104,10 +106,10 @@ void triangleInit()
 
 	glBindVertexArray(LightVAO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, LightVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (GLvoid *)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid *)0);
 		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -185,14 +187,13 @@ int main(int args, char **argv)
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
-
-
-	Matrix4 lightMat;
-	Vector3 lightPos(2, 3, -3);
-
 	Vector3 cubePos(0, 0, 0);
+	Vector3 lightPos(2, 3, -3);
+	Matrix4 lightMat;
 
-	Vector3 objColor;
+	Vector3 lightColor(1, 1, 1);
+	Vector3 objColor(1, 0, 0);
+
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -222,8 +223,10 @@ int main(int args, char **argv)
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glUniform1i(glGetUniformLocation(shader.Program, "ourTexture2"), 1);
 
+		glUniform3f(glGetUniformLocation(shader.Program, "lightPos"), lightPos.X, lightPos.Y, lightPos.Z);
 		objColor = Vector3(1, 0, 0);
 		glUniform3f(glGetUniformLocation(shader.Program, "objColor"), objColor.X, objColor.Y, objColor.Z);
+		glUniform3f(glGetUniformLocation(shader.Program, "lightColor"), lightColor.X, lightColor.Y, lightColor.Z);
 		glBindVertexArray(VAO1);
 		mat.Translate(cubePos);
 		glUniformMatrix4fv(transform, 1, true, mat.GetMatrixData());
@@ -232,6 +235,7 @@ int main(int args, char **argv)
 		objColor = Vector3(1, 1, 1);
 		glUniform3f(glGetUniformLocation(shader.Program, "objColor"), objColor.X, objColor.Y, objColor.Z);
 		glBindVertexArray(LightVAO);
+		lightMat.Scale(0.5f);
 		lightMat.Translate(lightPos);
 		glUniformMatrix4fv(transform, 1, true, lightMat.GetMatrixData());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -284,6 +288,6 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	float fov = camera.ProcessMouseScroll(yoffset);
+	float fov = camera.ProcessMouseScroll(static_cast<float>(yoffset));
 	persp.SetPerspective(fov, static_cast<float>(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100);
 }
