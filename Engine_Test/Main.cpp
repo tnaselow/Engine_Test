@@ -205,7 +205,7 @@ int main(int args, char **argv)
 		glfwPollEvents();
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
+		
 		GLfloat time = (float)glfwGetTime();
 		shader.Use();
 		//cam.SetDir(Vector3(cos(time) * cos(time), 0, sin(time) * sin(time)));
