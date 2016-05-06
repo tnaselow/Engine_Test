@@ -109,3 +109,8 @@ Matrix4 Camera::GetViewMatrix()
 	SetViewMatrix();
 	return mViewMatrix.GetInverse();
 }
+
+Vector3 &Camera::GetPosition()
+{
+	return mPosition;
+}

@@ -28,6 +28,8 @@ class Camera
 		void SetViewMatrix();
 		Matrix4 GetViewMatrix();
 
+		Vector3 &GetPosition();
+
 	private:
 		Matrix4 mViewMatrix;
 		Vector3 mPosition;
