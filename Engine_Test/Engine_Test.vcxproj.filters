@@ -43,5 +43,11 @@
     <None Include="..\shaders\vert.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="..\shaders\blankFrag.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\shaders\blankVert.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

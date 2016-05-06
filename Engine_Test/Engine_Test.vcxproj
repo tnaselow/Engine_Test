@@ -161,6 +161,8 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\shaders\blankFrag.shader" />
+    <None Include="..\shaders\blankVert.shader" />
     <None Include="..\shaders\frag.shader" />
     <None Include="..\shaders\vert.shader" />
   </ItemGroup>
